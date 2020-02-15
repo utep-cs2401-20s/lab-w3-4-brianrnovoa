@@ -29,12 +29,17 @@ public class GameOfLife {
                 board[i][j] = array[i][j];
             }
         }
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[i].length; j++) {
+                previous[i][j] = array[i][j];
+            }
+        }
     }
 
     // print board method //
     public void printBoard() {
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
+            for (int j = 0; j < board[0].length; j++) {
                 System.out.print(board[i][j] + " ");
             }
             System.out.println();
@@ -43,7 +48,7 @@ public class GameOfLife {
 
     public void printPrevious() {
         for (int i = 0; i < previous.length; i++) {
-            for (int j = 0; j < previous[i].length; j++) {
+            for (int j = 0; j < previous[0].length; j++) {
                 System.out.print(previous[i][j] + " ");
             }
             System.out.println();
@@ -116,13 +121,13 @@ public class GameOfLife {
         }
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                previous[i][j] = (neighbors(i, j));
+                previous[i][j] = neighbors(i, j);
             }
         }
 
         // rules //
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[j].length; j++) {
+            for (int j = 0; j < board[i].length; j++) {
                 // Any live cell with fewer than two live neighbours dies, as if by underpopulation. //
                 if (previous[i][j] == 1) {
                     board[i][j] = 0;
@@ -139,7 +144,17 @@ public class GameOfLife {
                 else if (board[i][j] == 0 && previous[i][j] > 3) {
                     board[i][j] = 1;
                 }
+
                 if ((previous[i][j] == 0) && board[i][j] == 1) {
+                    board[i][j] = 0;
+                }
+                else if(previous[i][j] == 2 && board[i][j] == 0) {
+                    board[i][j] = 0;
+                }
+                else if (previous[i][j] > 3 && board[i][j] == 0) {
+                    board[i][j] = 1;
+                }
+                if((previous[i][j] == 0) && board[i][j] == 1){
                     board[i][j] = 0;
                 }
             }
@@ -148,7 +163,7 @@ public class GameOfLife {
 
     // evolution method //
     public void evolution (int n) {
-        for(int i = 1; i <= n; i++) {
+        for(int i = 0; i < n; i++) {
             oneStep();
         }
     }
